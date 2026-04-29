@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Loading Surprise ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #d16ba5, #5f9cff, #2c3e50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* Screens */
+.screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  transition: all 1s ease;
+}
+
+.hidden {
+  opacity: 0;
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.fade-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* GIF */
+.gif {
+  width: 160px;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.6);
+  animation: float 3s infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Progress */
+.progress-bar {
+  width: 80%;
+  max-width: 300px;
+  height: 10px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff85a2, #6ec6ff);
+  box-shadow: 0 0 15px white;
+}
+
+/* Text */
+.text {
+  font-size: 24px;
+  max-width: 90%;
+  text-shadow: 0 0 15px rgba(255,255,255,0.9);
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 20px;
+  animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ⏳ LOADING SCREEN -->
+<div id="loadingScreen" class="screen fade-in">
+
+  <!-- 🎥 Loading GIF -->
+  <img src="bubu.gif" class="gif" alt="loading gif">
+
+  <h2>Preparing your surprise 💖</h2>
+
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
+  </div>
+
+  <div id="percent">0%</div>
+</div>
+
+<!-- 💖 CUTIE SCREEN -->
+<div id="cutieScreen" class="screen hidden">
+
+  <!-- 🧸 Cute GIF -->
+  <img src="cutie.webp" class="gif" alt="cute gif">
+
+  <div class="text">
+    A cutiepie was born today, 25 years ago 😊
+  </div>
+
+</div>
+
+<script>
+let progress = 0;
+
+// Loading animation
+let interval = setInterval(() => {
+  progress++;
+  document.getElementById("progress").style.width = progress + "%";
+  document.getElementById("percent").innerText = progress + "%";
+
+  if (progress >= 100) {
+    clearInterval(interval);
+
+    const loading = document.getElementById("loadingScreen");
+    const cutie = document.getElementById("cutieScreen");
+
+    // Fade out loading
+    loading.classList.add("fade-out");
+
+    setTimeout(() => {
+      loading.style.display = "none";
+
+      // Show next screen
+      cutie.classList.remove("hidden");
+      cutie.classList.add("fade-in");
+
+      // 💖 Heart burst
+      heartBurst();
+
+    }, 800);
+  }
+}, 40);
+
+// 💖 Heart burst effect
+function heartBurst() {
+  for (let i = 0; i < 40; i++) {
+    const heart = document.createElement("div");
+    heart.innerText = "💖";
+    heart.style.position = "fixed";
+    heart.style.left = "50%";
+    heart.style.top = "50%";
+    heart.style.fontSize = "20px";
+
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 100 + Math.random() * 150;
+
+    heart.style.transition = "all 1s ease-out";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.style.transform = `translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance}px)`;
+      heart.style.opacity = "0";
+    }, 10);
+
+    setTimeout(() => heart.remove(), 1000);
+  }
+}
+
+// 💞 Floating hearts background
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerText = "💖";
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 6000);
+}
+
+setInterval(createHeart, 300);
+
+// ➡️ Auto redirect
+setTimeout(() => {
+  window.location.href = "home.html";
+}, 8000);
+</script>
+
+</body>
+</html>
